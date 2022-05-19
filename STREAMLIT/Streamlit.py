@@ -25,14 +25,16 @@ elif app_mode == "Face Verification" and st.session_state.score == 0:
         else:
             train = st.button("Take images")
             if train:
-                data = {"mode":"train","image_area":WINDOW}
+                # data = {"mode":"train","image_area":WINDOW}
+                data = {"mode":"train"}
                 status = obj1.call_controller(data)
                 if status == "success":
                     st.success("Image Trained Successfully")
 
                     predp = st.button("Predict")
                     if predp:
-                        data = {"mode":"predict","image_area":WINDOW}
+                        # data = {"mode":"predict","image_area":WINDOW}
+                        data = {"mode":"predict"}
                         status = obj1.call_controller(data)
                         if status:
                             st.session_state.score = 1

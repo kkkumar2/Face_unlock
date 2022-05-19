@@ -1,38 +1,24 @@
-from fastapi import FastAPI ,Request, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-import uvicorn
-from fastapi.responses import HTMLResponse,FileResponse,JSONResponse
-from typing import Optional,List,Union,Dict
-import os
-import logging
-import time
-# from schema import Face_verification
+from fastapi import Request
+from fastapi import APIRouter,Depends
 from pydantic import BaseModel
+from FASTAPI.webapp.schema import Face_verification
+from face_recognition.validation import Verify
 
-app  = FastAPI()
+router = APIRouter(
+    prefix="/Face_controller",
+    tags=["Face_controller"]
+)
 
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["POST","GET"], 
-    allow_headers=["*"],
-    max_age=2 # how mcuh hit api per second
-    )
+obj1 = Verify()
 
-class Face_verification(BaseModel):
-    mode: str
-    # image_area: str
-
-@app.post("/Face_controller")
+@router.post("/")
 def verify(data:Face_verification,request:Request):
-    print("Predict API hitted")
-    print("data is",data.mode)
-    return "IPL"
+    mode = data.mode
+    print(mode)
+    if mode == "verify":
+        pass
+    if mode == "train":
+        pass
+    if mode == "predict":
+        pass
 
-
-if __name__ == "__main__":
-    uvicorn.run(app,port=8080)
