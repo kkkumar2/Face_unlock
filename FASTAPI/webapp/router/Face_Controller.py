@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi import APIRouter,Depends
 from pydantic import BaseModel
-from FASTAPI.webapp.schema import Face_verification
+from webapp.schema import Face_verification
 from face_recognition.validation import Verify
 
 router = APIRouter(
@@ -16,9 +16,12 @@ def verify(data:Face_verification,request:Request):
     mode = data.mode
     print(mode)
     if mode == "verify":
-        pass
+        response = obj1.validate(frame_count=1)
+        return response
     if mode == "train":
-        pass
+        response = obj1.generate_embeds(frame_count=10)
+        return response
     if mode == "predict":
-        pass
+        response = obj1.validate(frame_count=1)
+        return response
 

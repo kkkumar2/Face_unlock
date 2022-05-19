@@ -1,11 +1,14 @@
 from fastapi import APIRouter,Request
-from FASTAPI.webapp.schema import  UserEntity,UsersEntity,User 
-from FASTAPI.utils.database import db
+from webapp.schema import User 
+# from utils.database import db
 from bson import ObjectId
 
+db = ""
 
-
-route = APIRouter(tags=["database"])
+route = APIRouter(
+    prefix="/crud",
+    tags=["crud"]
+)
 
 # =============== Starting CRUD operations ===================
 

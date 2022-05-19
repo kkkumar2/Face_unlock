@@ -19,7 +19,7 @@ elif app_mode == "Face Verification" and st.session_state.score == 0:
         # data = {"mode":"verify","image_area":WINDOW}
         data = {"mode":"verify"}
         status = obj1.call_controller(data)
-        if status == "success":
+        if status == "Verified":
             st.session_state.score = 1
             print("inida")
         else:
