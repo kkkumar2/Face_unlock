@@ -2,7 +2,7 @@ from fastapi import FastAPI ,Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import Depends, FastAPI, HTTPException, status
 import uvicorn
-from webapp.router import Database,Face_Controller
+from webapp.router import crud,Face_Controller
 import os
 
 
@@ -18,8 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
     max_age=2 
     )
-    
-app.include_router(Database.router)
+
+app.include_router(crud.router)
 app.include_router(Face_Controller.router)
 
 
