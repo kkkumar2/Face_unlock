@@ -1,6 +1,6 @@
 import cv2
-from face_recognition.face_detector import FaceDetector
-from face_recognition.feature_extract import FaceExtractor
+from FACE_VERIFICATION.face_detector import FaceDetector
+from FACE_VERIFICATION.feature_extract import FaceExtractor
 import os
 import pandas as pd
 import pickle
@@ -24,12 +24,14 @@ class Verify:
         else:
             self.embed = {}
 
-    def verify(self,frame_count):
+    def verify(self,frame_count,WINDOW):
         count = 0
         cap = cv2.VideoCapture(0)
         while True:
             _,frame = cap.read()
-            image, boxes =  obj1.face_detector(frame)
+            image, boxes =  obj1.face_detector(frame,WINDOW)
+            if boxes is None:
+                continue
             current_embed = obj2.face_extractor(image, boxes)
             current_encodings = np.array(current_embed)
             if self.file_present:
@@ -45,13 +47,13 @@ class Verify:
             if count >= frame_count:
                 break
 
-    def generate_embeds(self,frame_count=10):
+    def generate_embeds(self,frame_count=10,WINDOW=None):
         count = 0
         final_current_embeddings = []
         cap = cv2.VideoCapture(0)
         while True:
             _,frame = cap.read()
-            image, boxes =  obj1.face_detector(frame)
+            image, boxes =  obj1.face_detector(frame,WINDOW)
             current_embed = obj2.face_extractor(image, boxes)
             final_current_embeddings.append(current_embed)
             count+=1    
@@ -68,5 +70,5 @@ class Verify:
 
         with open(self.embed_path, 'wb') as f:
                 pickle.dump(self.embed, f)
-
-            
+        return "success"
+           

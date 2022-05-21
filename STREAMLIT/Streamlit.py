@@ -1,10 +1,21 @@
 import streamlit as st
 from calling import caller
+from run import RUN
 
 obj1 = caller()
+obj2 = RUN()
 
 if 'score' not in st.session_state:
-    st.session_state['score'] = 0
+    st.session_state['score'] = 0 
+
+if 'verify_button' not in st.session_state:
+    st.session_state['verify_button'] = 1
+
+if 'train_button' not in st.session_state:
+    st.session_state['train_button'] = 0
+
+if 'predict_button' not in st.session_state:
+    st.session_state['predict_button'] = 0
 
 app_mode = st.sidebar.selectbox('Choose the App mode',
 ['About App','Face Verification'])
@@ -13,31 +24,41 @@ if app_mode =='About App':
 
 elif app_mode == "Face Verification" and st.session_state.score == 0:
     st.title("WEBCAM")
-    WINDOW = st.image([])  ## How to render this in frontend need to discuss 
-    take = st.button("Verify")
-    if take:
-        # data = {"mode":"verify","image_area":WINDOW}
-        data = {"mode":"verify"}
-        status = obj1.call_controller(data)
-        if status == "Verified":
-            st.session_state.score = 1
-            print("inida")
-        else:
-            train = st.button("Take images")
-            if train:
-                # data = {"mode":"train","image_area":WINDOW}
-                data = {"mode":"train"}
-                status = obj1.call_controller(data)
-                if status == "success":
-                    st.success("Image Trained Successfully")
-
-                    predp = st.button("Predict")
-                    if predp:
-                        # data = {"mode":"predict","image_area":WINDOW}
-                        data = {"mode":"predict"}
-                        status = obj1.call_controller(data)
-                        if status:
-                            st.session_state.score = 1
+    WINDOW = st.image([])  ## How to render this in frontend need to discuss
+    if st.session_state.verify_button == 1: 
+        take = st.button("Verify")
+        if take:
+            data = {"mode":"verify","image_area":WINDOW}
+            # data = {"mode":"verify"}
+            status = obj2.controller(data)
+            if status == "Verified":
+                st.session_state.score = 1
+                st.success("User Verified")
+            else:
+                st.success("User Not Verified")
+                st.session_state.train_button = 1
+                st.session_state.verify_button = 0
+    if st.session_state.train_button == 1:
+        train = st.button("Take images")
+        if train:
+            data = {"mode":"train","image_area":WINDOW}
+            # data = {"mode":"train"}
+            status = obj2.controller(data)
+            if status == "success":
+                st.success("Image Trained Successfully")
+                st.session_state.predict_button = 1
+                st.session_state.train_button = 0
+                st.session_state.verify_button = 0
+                
+    if st.session_state.predict_button == 1:
+        predp = st.button("Predict")
+        if predp:
+            data = {"mode":"predict","image_area":WINDOW}
+            # data = {"mode":"predict"}
+            status = obj2.controller(data)
+            if status:
+                st.session_state.score = 1
+                st.success("User Verified")
 
 if st.session_state.score != 0:
     app_mode2 = st.sidebar.selectbox('Data',
