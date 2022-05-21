@@ -9,10 +9,13 @@ class RUN:
         mode = data['mode']
         if mode == "verify":
             response = obj1.verify(frame_count=1,WINDOW=data['image_area'])
+            print(response)
             return response['msg']
         if mode == "train":
-            response = obj1.generate_embeds(frame_count=10,WINDOW=data['image_area'])
+            response = obj1.generate_embeds(frame_count=2,WINDOW=data['image_area'])
+            print(response)
             return response
         if mode == "predict":
             response = obj1.verify(frame_count=1,WINDOW=data['image_area'])
+            print(response)
             return response

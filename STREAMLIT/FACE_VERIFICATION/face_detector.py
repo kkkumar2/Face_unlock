@@ -11,11 +11,14 @@ class FaceDetector:
     
         RGB = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
         boxes = face_recognition.face_locations(RGB, model='hog') 
-        
+        flag = False
         for (y1, x2, y2, x1) in boxes:
-            cropped_face = RGB[y1:y2, x1:x2]
+            # cropped_face = RGB[y1:y2, x1:x2]
+            flag = True
             cv2.rectangle(RGB, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            face = cv2.resize(cropped_face, (200, 200))
+            # face = cv2.resize(RGB, (200, 200))
             WINDOW.image(RGB)
-        if face is not None: 
-            return face,boxes
+        if flag:
+            return RGB,boxes
+        else:
+            return None,None

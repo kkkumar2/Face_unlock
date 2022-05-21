@@ -18,11 +18,6 @@ class Verify:
         self.metadata_dir = r"DATA\\Metadata"
         filename = "Embedding.pkl"
         self.embed_path = os.path.join(self.metadata_dir, filename)
-        self.file_present = os.path.exists(self.embed_path)
-        if self.file_present:
-            self.embed = pd.read_pickle(self.embed_path)
-        else:
-            self.embed = {}
 
     def verify(self,frame_count,WINDOW):
         count = 0
@@ -32,43 +27,59 @@ class Verify:
             image, boxes =  obj1.face_detector(frame,WINDOW)
             if boxes is None:
                 continue
-            current_embed = obj2.face_extractor(image, boxes)
-            current_encodings = np.array(current_embed)
-            if self.file_present:
-                just_embed_keys = list(self.embed.keys())
+            current_embed = obj2.face_extractor(image, boxes) ## list of len (128,)
+            current_encodings = np.array(current_embed[0])       ## Array of shape (1,128)
+            embed = self.file_chk()
+            if embed:
+                just_embed_keys = list(embed.keys())
                 for ele in just_embed_keys:
-                    full_encodings = np.array(self.embed[ele]) ## Full encodings for one person
-                    score  = cosine_similarity(current_encodings, full_encodings)
-                    if max(score[0]) * 100 > 90:
-                        return {"msg":"Verified","unique_id":ele}
+                    for i in range(len(embed[ele])):
+                        full_encodings = np.array(embed[ele][i]) ## Full encodings for one person
+                        current_encodings = current_encodings.reshape(1,-1)
+                        full_encodings = full_encodings.reshape(1,-1)
+                        score  = cosine_similarity(current_encodings, full_encodings)
+                        if score[0][0] * 100 > 90:
+                            return {"msg":"Verified","unique_id":ele}
             else:
                 return {"msg":"Not Verified"}
             count+=1    
             if count >= frame_count:
                 break
 
-    def generate_embeds(self,frame_count=10,WINDOW=None):
+    def generate_embeds(self,frame_count=2,WINDOW=None):
         count = 0
         final_current_embeddings = []
         cap = cv2.VideoCapture(0)
         while True:
             _,frame = cap.read()
             image, boxes =  obj1.face_detector(frame,WINDOW)
+            if boxes is None:
+                continue
             current_embed = obj2.face_extractor(image, boxes)
-            final_current_embeddings.append(current_embed)
+            final_current_embeddings.append(current_embed[0])
             count+=1    
             if count >= frame_count:
                 break
-        if self.file_present:
-            len_id = len(self.embed)
+        embed = self.file_chk()
+        if embed:
+            len_id = len(embed)
             unique_id = len_id
-            self.embed[unique_id] = final_current_embeddings
+            embed[unique_id] = final_current_embeddings
 
         else:
             os.makedirs(self.metadata_dir,exist_ok=True)
-            self.embed[0] = final_current_embeddings
+            embed = {}
+            embed[0] = final_current_embeddings
 
         with open(self.embed_path, 'wb') as f:
-                pickle.dump(self.embed, f)
+                pickle.dump(embed, f)
         return "success"
            
+
+    def file_chk(self):
+        file_present = os.path.exists(self.embed_path)
+        if file_present:
+            embed = pd.read_pickle(self.embed_path)
+            return embed
+        else:
+            return False

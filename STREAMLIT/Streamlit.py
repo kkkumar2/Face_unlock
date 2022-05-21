@@ -56,7 +56,7 @@ elif app_mode == "Face Verification" and st.session_state.score == 0:
             data = {"mode":"predict","image_area":WINDOW}
             # data = {"mode":"predict"}
             status = obj2.controller(data)
-            if status:
+            if status == "Verified":
                 st.session_state.score = 1
                 st.success("User Verified")
 
