@@ -6,12 +6,13 @@ import pandas as pd
 import pickle
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-
+from utils.encrypt import Encrypt
 
 
 
 obj1 = FaceDetector()
 obj2 = FaceExtractor()
+obj3 = Encrypt()
 
 class Verify:
     def __init__(self):
@@ -27,8 +28,8 @@ class Verify:
             image, boxes =  obj1.face_detector(frame,WINDOW)
             if boxes is None:
                 continue
-            current_embed = obj2.face_extractor(image, boxes) ## list of len (128,)
-            current_encodings = np.array(current_embed[0])       ## Array of shape (1,128)
+            current_embed = obj2.face_extractor(image, boxes) 
+            current_encodings = np.array(current_embed[0])       
             embed = self.file_chk()
             if embed:
                 just_embed_keys = list(embed.keys())
@@ -73,12 +74,14 @@ class Verify:
 
         with open(self.embed_path, 'wb') as f:
                 pickle.dump(embed, f)
+        obj3.encrypt_file(self.embed_path)
         return "success"
            
 
     def file_chk(self):
         file_present = os.path.exists(self.embed_path)
         if file_present:
+            obj3.decrypt_file(self.embed_path)
             embed = pd.read_pickle(self.embed_path)
             return embed
         else:
