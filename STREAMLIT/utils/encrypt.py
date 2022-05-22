@@ -33,8 +33,8 @@ class Encrypt:
                 pickle.dump(df, f)
             self.encrypt_file(self.secrets_path)
 
-    def encrypt(self,unique_id=None,data=None):
-        if self.file_cipher != None:
+    def encrypt(self,unique_id=None,userdata=None):
+        if self.file_cipher == None:
             self.secret_key_gen()
         if not os.path.exists(self.secrets_path):
             data = {unique_id: self.cipher}
@@ -45,8 +45,8 @@ class Encrypt:
 
         result = []
         self.update_key_cipher(unique_id)
-        if type(data) == "list":
-            for ele in data:
+        if type(userdata) == "list":
+            for ele in userdata:
                 ele = bytes(ele,encoding='utf-8')
                 result.append(self.cipher.encrypt(ele))
             return result,self.cipher
@@ -85,9 +85,9 @@ class Encrypt:
         if not os.path.exists(self.secret_key):
             data = {"key": self.cipher}
             with open(self.secret_key, 'wb') as file:
-                file.write(data)
-            self.key = self._get_key
-            self.cipher = self._get_cipher
-        with open(self.secret_key,"rb") as file:
-            file_data = file.read()
-            self.file_cipher = file_data["key"]
+                pickle.dump(data, file)
+            self.key = self._get_key()
+            self.cipher = self._get_cipher()
+        
+        file_data = pd.read_pickle(self.secret_key)
+        self.file_cipher = file_data["key"]
