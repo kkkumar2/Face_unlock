@@ -5,7 +5,7 @@ obj1 = RUN()
 
 
 if 'score' not in st.session_state:
-    st.session_state['score'] = 1# i have changes this used database directly bypase all of things 
+    st.session_state['score'] = 0 
 
 if 'verify_button' not in st.session_state:
     st.session_state['verify_button'] = 1
@@ -25,7 +25,7 @@ if app_mode =='About App':
 
 elif app_mode == "Face Verification" and st.session_state.score == 0:
     st.title("WEBCAM")
-    WINDOW = st.image([])  ## How to render this in frontend need to discuss
+    WINDOW = st.image([])  
     if st.session_state.verify_button == 1: 
         take = st.button("Verify")
         if take:

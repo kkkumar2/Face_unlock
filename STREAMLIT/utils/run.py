@@ -26,7 +26,7 @@ class RUN:
 
     def encrypt_controller(self,unique_id,data=None,mode=None):
         
-        # encrypted_category = {data:obj2.encrypt(data)}
+        data = {data:obj2.encrypt(unique_id,data)}
         return obj3.database_controller(unique_id,data,mode=mode)
        
 
