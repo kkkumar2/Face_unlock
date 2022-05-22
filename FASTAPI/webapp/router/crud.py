@@ -16,13 +16,18 @@ route = APIRouter(
 def find_user(unique_id,request: Request,response: Response):
     query = {"unique_id": unique_id}
     hash_data = [data for data in db.find(query)]
-    response.status_code = status.HTTP
+    response.status_code = status.HTTP_200_OK
+    data = []
+    for i in hash_data:
+        data.append(i['data'])
+    return  data
 
 
 @route.post("/")
 def create_user(data:User,request:Request,response: Response):
     db.insert_one(dict(data))
     response.status_code = status.HTTP_201_CREATED
+    return response
     
 
 @route.put("/{unique_id}")

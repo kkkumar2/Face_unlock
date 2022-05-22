@@ -14,7 +14,7 @@ class RUN:
         if mode == "verify":
             response = obj1.verify(frame_count=1,WINDOW=data['image_area'])
             print(response)
-            return response['msg']
+            return response
         if mode == "train":
             response = obj1.generate_embeds(frame_count=2,WINDOW=data['image_area'])
             print(response)
@@ -24,15 +24,9 @@ class RUN:
             print(response)
             return response
 
-    def encrypt_controller(self,data):
-        mode = data['mode']
-        if mode == "Add":
-            encrypted_category = obj2.encrypt(data['category'])
-            encrypted_username = obj2.encrypt(data['username'])
-            encrypted_password = obj2.encrypt(data['password'])
-
-        data = {"mode":mode, "encrypted_category":encrypted_category, 
-        "encrypted_username":encrypted_username, "encrypted_password":encrypted_password}
-
-        obj3.database_controller(data)
+    def encrypt_controller(self,unique_id,data=None,mode=None):
+        
+        # encrypted_category = {data:obj2.encrypt(data)}
+        return obj3.database_controller(unique_id,data,mode=mode)
+       
 

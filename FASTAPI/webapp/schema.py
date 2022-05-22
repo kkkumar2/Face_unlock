@@ -13,4 +13,5 @@ from typing import List
 
 class User(BaseModel):
     data:List
+    unique_id:str
 
