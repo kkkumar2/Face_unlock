@@ -66,7 +66,7 @@ elif app_mode == "Face Verification" and st.session_state.score == 0:
 
 if st.session_state.score == 1 & unique_id is not None:
     app_mode2 = st.sidebar.selectbox('Data',
-    ["Choose","Add","View","update","Delete"]
+    ["Choose","Add","View"]
     )
 
     if app_mode2 == "Add":
@@ -92,10 +92,14 @@ if st.session_state.score == 1 & unique_id is not None:
             password.append(data[2])
         category = st.selectbox("Enter the category to fetch",options)
         dd = st.button("Show")
-        st.session_state['score'] = 2
+        if dd:
+            st.session_state['score'] = 2
 
+        
 if st.session_state['score'] == 2:
-    st.success('collll')
+    app_mode2 = st.sidebar.selectbox('Data',
+    ["Choose","update","Delect"]
+    )
 
 
     # if dd:
