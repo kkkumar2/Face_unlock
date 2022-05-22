@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import List
 
 # def UserEntity(item) :
 #     return {
@@ -12,6 +12,5 @@ from pydantic import BaseModel
 #     return[UserEntity(item) for item in entity]
 
 class User(BaseModel):
-    unique_id:str 
-    hassing_value:str
+    data:List
 
