@@ -69,20 +69,12 @@ if st.session_state.score != 0:
             category = st.text_input("what data you want to store")
             username = st.text_input("Username")
             password = st.text_input("Password",type="password")
-<<<<<<< HEAD
-            submit_button = st.form_submit_button("save")
-        if submit_button:
-            send ={"data":[category,username,password]}
-            # st.success(f"{data}")
-            obj1.database_controller(data=data,mode=app_mode2)
-=======
             data = {"mode":app_mode2,"category":category,"username":username,"password":password}
             # st.form_submit_button("save",on_click=obj1.encrypt_controller(data=data))
             submit = st.form_submit_button("save")
             if submit:
                 status = obj1.encrypt_controller(data=data)
                 st.success(status)
->>>>>>> 18bca233f5c656355d0c20b2c343654e05fb9453
 
 
     elif app_mode2 == "View":
@@ -90,11 +82,7 @@ if st.session_state.score != 0:
         options = ['choose','microsoft','ineuron','hdfc','View all']
         category = st.selectbox("Enter the category to fetch",options)
         data = {"mode":app_mode2,"category": category}
-<<<<<<< HEAD
         st.button("View")
-=======
-        st.button("View",on_click=obj1.encrypt_controller(data=data))
->>>>>>> 18bca233f5c656355d0c20b2c343654e05fb9453
         
 
     elif app_mode2 == "Delete":
