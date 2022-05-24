@@ -5,7 +5,7 @@ obj1 = RUN()
 
 
 if 'score' not in st.session_state:
-    st.session_state['score'] = 1 
+    st.session_state['score'] = 0 
 
 if 'verify_button' not in st.session_state:
     st.session_state['verify_button'] = 1
