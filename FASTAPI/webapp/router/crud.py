@@ -17,9 +17,10 @@ def find_user(unique_id,request: Request,response: Response):
     query = {"unique_id": unique_id}
     hash_data = [data for data in db.find(query)]
     response.status_code = status.HTTP_200_OK
-    data = []
+    data = {}
     for i in hash_data:
-        data.append(i['data'])
+        data[str(i["_id"])] = i['data']
+        
     return  data
 
 
@@ -30,15 +31,17 @@ def create_user(data:User,request:Request,response: Response):
     return response
     
 
-@route.put("/{unique_id}")
-def update_user(unique_id,data:User,request:Request,response: Response):
+@route.put("/{_id}")
+def update_user(_id,data:User,request:Request,response: Response):
+    print(_id)
     db.find_one_and_update(
-                            {"_id":ObjectId(id)},
+                            {"_id":ObjectId(_id)},
                             {"$set":dict(data)})
-    response.status_code = status.HTTP_200_OK
+    response.status_code = status.HTTP_201_CREATED
+    return response
 
-@route.delete("/{unique_id}")
-def delete(unique_id,request:Request,response: Response):
-    db.find_one_and_delete({"_id":ObjectId(id)})
+@route.delete("/{_id}")
+def delete(_id,request:Request,response: Response):
+    db.find_one_and_delete({"_id":ObjectId(_id)})
     response.status_code = status.HTTP_301_MOVED_PERMANENTLY
 

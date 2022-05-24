@@ -11,7 +11,7 @@ class caller:
         self.END_POINT1 = os.getenv("END_POINT1")
         self.END_POINT2 = os.getenv("END_POINT2")
 
-    def database_controller(self,unique_id,data=None,mode=None):
+    def database_controller(self,unique_id,data=None,mode=None,_id=None):
         
         URL = f"{self.BASE_URI}{self.END_POINT2}"
         if mode == 'Add':
@@ -25,5 +25,16 @@ class caller:
             # user = {"unique_id":unique_id}
             # json_data = json.dump(user)
             URL = f"{URL}/{unique_id}"
-            response = requests.get(URL,headers=self.HEADERS,timeout=8000)
+            response = requests.get(URL,timeout=8000)
             return json.loads(response.content)
+
+        elif mode == 'Update':
+            user = {"unique_id": unique_id,"data":data}
+            json_data = json.dumps(user)
+            URL = f"{URL}/{_id}"
+            response = requests.put(URL, data=json_data,timeout=8000)
+
+        elif mode == 'Delect':
+            URL = f"{URL}/{_id}"
+            response = requests.delete(URL, timeout=8000)
+
