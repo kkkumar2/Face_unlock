@@ -5,7 +5,7 @@ obj1 = RUN()
 
 
 if 'score' not in st.session_state:
-    st.session_state['score'] = 1 
+    st.session_state['score'] = 0 
 
 if 'verify_button' not in st.session_state:
     st.session_state['verify_button'] = 1
@@ -98,7 +98,7 @@ if st.session_state.score == 1 & unique_id is not None:
         
 if st.session_state['score'] == 2:
     app_mode2 = st.sidebar.selectbox('Data',
-    ["Choose","update","Delect"]
+    ["Choose","update","Delete"]
     )
 
 

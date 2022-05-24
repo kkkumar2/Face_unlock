@@ -74,14 +74,14 @@ class Verify:
 
         with open(self.embed_path, 'wb') as f:
                 pickle.dump(embed, f)
-        obj3.encrypt_file(self.embed_path)
+        # obj3.encrypt_file(self.embed_path)
         return "success"
            
 
     def file_chk(self):
         file_present = os.path.exists(self.embed_path)
         if file_present:
-            obj3.decrypt_file(self.embed_path)
+            # obj3.decrypt_file(self.embed_path)
             embed = pd.read_pickle(self.embed_path)
             return embed
         else:

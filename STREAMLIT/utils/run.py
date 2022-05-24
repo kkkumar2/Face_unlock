@@ -1,6 +1,7 @@
 from FACE_VERIFICATION.validation import Verify
 from utils.encrypt import Encrypt
 from utils.calling import caller
+import pickle
 
 obj1 = Verify()
 obj2 = Encrypt()
@@ -26,7 +27,15 @@ class RUN:
 
     def encrypt_controller(self,unique_id,data=None,mode=None):
         
-        data = {data:obj2.encrypt(unique_id,data)}
-        return obj3.database_controller(unique_id,data,mode=mode)
+        data1 = {"data":obj2.encrypt_data(unique_id,data)}
+        ### test
+        print(data1)
+        with open("usedata.pkl",'wb') as f:
+            pickle.dump(data1,f)
+        ### test 
+
+        # data2 = {"data":obj2.decrypt_data(unique_id,data1)} ## for testing purpose
+        # print(data2)
+        # return obj3.database_controller(unique_id,data1,mode=mode)
        
 
