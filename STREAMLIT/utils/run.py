@@ -24,9 +24,9 @@ class RUN:
             print(response)
             return response
 
-    def encrypt_controller(self,unique_id,data=None,mode=None):
+    def encrypt_controller(self,unique_id=None,data=None,mode=None,_id=None):
         
-        data = {data:obj2.encrypt(unique_id,data)}
-        return obj3.database_controller(unique_id,data,mode=mode)
+        # data = {data:obj2.encrypt(unique_id,data)}
+        return obj3.database_controller(unique_id,data,mode=mode,_id =_id)
        
 
