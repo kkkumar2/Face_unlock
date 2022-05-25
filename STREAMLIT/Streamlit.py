@@ -5,7 +5,7 @@ obj1 = RUN()
 
 
 if 'score' not in st.session_state:
-    st.session_state['score'] = 0 
+    st.session_state['score'] = 1 
 
 if 'verify_button' not in st.session_state:
     st.session_state['verify_button'] = 1
@@ -118,12 +118,6 @@ if st.session_state.score == 1 & unique_id is not None:
             options.append(data[0])
             _ids.append(_id)
         
-<<<<<<< HEAD
-if st.session_state['score'] == 2:
-    app_mode2 = st.sidebar.selectbox('Data',
-    ["Choose","update","Delete"]
-    )
-=======
         category = st.selectbox("Enter the category to fetch",options)
         username = st.text_input("Username")
         password = st.text_input("Password",type="password")
@@ -150,7 +144,6 @@ if st.session_state['score'] == 2:
         username = st.text_input("Username",value=values[1])
         password = st.text_input("Password",value=values[2])
         delect = st.button("Delect")
->>>>>>> 10d6811458767000fadc5d84bccefff5882f2ec3
 
         if delect:
             idofdata = _ids[index]

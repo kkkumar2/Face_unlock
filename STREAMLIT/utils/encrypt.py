@@ -21,8 +21,8 @@ class Encrypt:
 
     def first_time_key_generator(self,unique_id):
         if not os.path.exists(self.secrets_path):
-            key = self._get_key()
-            key = key.decode()
+            key = self._get_key() # create a byte key
+            key = key.decode()  # bytes to string
             data = {unique_id: key}
             with open(self.secrets_path, 'wb') as f:
                 pickle.dump(data, f)
@@ -63,7 +63,7 @@ class Encrypt:
 
     def decrypt_data(self,unique_id,userdata):
         self.decrypt_file(self.secrets_path)
-        key = self.fetch_key_per_user(unique_id)
+        key = self.fetch_key_per_user(unique_id,"decrypt")
         cipher = self._get_cipher(key)
         result = []
         if isinstance(userdata,list):
