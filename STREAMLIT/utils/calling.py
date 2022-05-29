@@ -5,15 +5,17 @@ import os
 
 class caller:
     def __init__(self):
-        load_dotenv()
-        self.BASE_URI = os.getenv("BASE_URI")
-        self.HEADERS = {"Content-type": os.getenv("Content-type"),"accept": os.getenv("accept")}
-        self.END_POINT1 = os.getenv("END_POINT1")
-        self.END_POINT2 = os.getenv("END_POINT2")
+        # load_dotenv()
+        # self.BASE_URI = os.getenv("BASE_URI")
+        # self.HEADERS = {"Content-type": os.getenv("Content-type"),"accept": os.getenv("accept")}
+        # self.END_POINT1 = os.getenv("END_POINT1")
+        # self.END_POINT2 = os.getenv("END_POINT2")
+        pass
 
     def database_controller(self,unique_id,data=None,mode=None,_id=None):
         
-        URL = f"{self.BASE_URI}{self.END_POINT2}"
+        URL = "http://127.0.0.1:8000/crud"
+        # URL = "http://fastapi:8000/curd" used for docker compose
         if mode == 'Add':
             user = {"unique_id": unique_id,"data":data}
             json_data = json.dumps(user)

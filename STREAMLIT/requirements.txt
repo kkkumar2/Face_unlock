@@ -2,3 +2,5 @@ streamlit
 requests
 python-dotenv
 json
+face-recognition
+opencv-python
