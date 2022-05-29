@@ -16,7 +16,7 @@ obj3 = Encrypt()
 
 class Verify:
     def __init__(self):
-        self.metadata_dir = r"DATA\\Metadata"
+        self.metadata_dir = os.path.join('STREAMLIT',"Metadata")
         filename = "Embedding.pkl"
         self.embed_path = os.path.join(self.metadata_dir, filename)
 
@@ -39,8 +39,12 @@ class Verify:
                         current_encodings = current_encodings.reshape(1,-1)
                         full_encodings = full_encodings.reshape(1,-1)
                         score  = cosine_similarity(current_encodings, full_encodings)
-                        if score[0][0] * 100 > 90:
-                            return {"msg":"Verified","unique_id":ele}
+                        if score[0][0] * 100 > 93:
+                            status = {"msg":"Verified","unique_id":ele}
+                            return status
+                        else:
+                            status = {"msg":"Not Verified"}
+                return status
             else:
                 return {"msg":"Not Verified"}
             count+=1    
@@ -64,24 +68,24 @@ class Verify:
         embed = self.file_chk()
         if embed:
             len_id = len(embed)
-            unique_id = len_id
+            unique_id = len_id + 1
             embed[unique_id] = final_current_embeddings
 
         else:
             os.makedirs(self.metadata_dir,exist_ok=True)
             embed = {}
-            embed[0] = final_current_embeddings
+            embed[1] = final_current_embeddings
 
         with open(self.embed_path, 'wb') as f:
                 pickle.dump(embed, f)
-        obj3.encrypt_file(self.embed_path)
+        # obj3.encrypt_file(self.embed_path)
         return "success"
            
 
     def file_chk(self):
         file_present = os.path.exists(self.embed_path)
         if file_present:
-            obj3.decrypt_file(self.embed_path)
+            # obj3.decrypt_file(self.embed_path)
             embed = pd.read_pickle(self.embed_path)
             return embed
         else:

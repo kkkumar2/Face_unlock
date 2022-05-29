@@ -1,6 +1,10 @@
 streamlit
 requests
 python-dotenv
-json
-face-recognition
+jsons
+cryptography
+pandas
 opencv-python
+scikit-learn
+face_recognition
+ 

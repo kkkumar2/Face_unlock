@@ -20,12 +20,13 @@ class caller:
             user = {"unique_id": unique_id,"data":data}
             json_data = json.dumps(user)
             response = requests.post(URL,data=json_data, headers=self.HEADERS, timeout=8000)
-            # response = requests.post(URL,data=user, timeout=8000)
             print(response.status_code)
-            return response
+            if response.status_code == 201:
+                return "Successfully Added"
+            else:
+                return "Error in Adding, please try again"
+            
         elif mode == 'View':
-            # user = {"unique_id":unique_id}
-            # json_data = json.dump(user)
             URL = f"{URL}/{unique_id}"
             response = requests.get(URL,timeout=8000)
             return json.loads(response.content)
@@ -35,8 +36,16 @@ class caller:
             json_data = json.dumps(user)
             URL = f"{URL}/{_id}"
             response = requests.put(URL, data=json_data,timeout=8000)
+            if response.status_code == 201:
+                return "Successfully updated"
+            else:
+                return "Error in update, please try again"
 
-        elif mode == 'Delect':
+        elif mode == 'Delete':
             URL = f"{URL}/{_id}"
             response = requests.delete(URL, timeout=8000)
+            if response.status_code == 301:
+                return "Successfully Deleted"
+            else:
+                return "Error in delete, please try again"
 
