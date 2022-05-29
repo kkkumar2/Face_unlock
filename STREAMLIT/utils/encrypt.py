@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 class Encrypt:
     def __init__(self):
         load_dotenv()
-        self.secrets_path = os.path.join('DATA','Metadata','secrets.pkl')
-        self.file_key = bytes(os.getenv('SECRET_KEY'),'utf-8')
+        self.secrets_path = os.path.join('STREAMLIT','Metadata','secrets.pkl')
+        # self.file_key = bytes(os.getenv('SECRET_KEY'),'utf-8')
         # self.file_cipher = self._get_cipher(self.file_key)
         # self.file_cipher = pd.read_pickle("useless.pkl")
 
@@ -26,8 +26,8 @@ class Encrypt:
             data = {unique_id: key}
             with open(self.secrets_path, 'wb') as f:
                 pickle.dump(data, f)
-            self.encrypt_file(self.secrets_path)
-        self.decrypt_file(self.secrets_path)
+        #     self.encrypt_file(self.secrets_path)
+        # self.decrypt_file(self.secrets_path)
 
     
     def fetch_key_per_user(self,unique_id,type=None):
@@ -43,50 +43,56 @@ class Encrypt:
             df[unique_id] = s_key
             with open(self.secrets_path, 'wb') as f:
                 pickle.dump(df, f)
-            self.encrypt_file(self.secrets_path)
+            # self.encrypt_file(self.secrets_path)
             return bytes(s_key,'utf-8')
 
 
     def encrypt_data(self,unique_id=None,userdata=None,key=None):
         self.first_time_key_generator(unique_id)
         key = self.fetch_key_per_user(unique_id)
+        print(f"key used for encrypting is {key} ")
         cipher = self._get_cipher(key)
         result = []
         if isinstance(userdata,list):
             for ele in userdata:
                 ele = bytes(ele,encoding='utf-8')
-                result.append(cipher.encrypt(ele))
+                result.append(cipher.encrypt(ele).decode())
             return result
         else:
             result = cipher.encrypt(userdata)
             return result
 
     def decrypt_data(self,unique_id,userdata):
-        self.decrypt_file(self.secrets_path)
+        # self.decrypt_file(self.secrets_path)
         key = self.fetch_key_per_user(unique_id,"decrypt")
+        print(f"key used for decrypting is {key} ")
         cipher = self._get_cipher(key)
         result = []
         if isinstance(userdata,list):
             for ele in userdata:
-                result.append(cipher.decrypt(ele))
+                ele = bytes(ele,encoding='utf-8')
+                ele = cipher.decrypt(ele)
+                result.append(ele.decode())
             return result
         else:
+            result = bytes(ele,encoding='utf-8')
             result = cipher.decrypt(userdata)
+            result = result.decode()
             return result
 
 
-    def encrypt_file(self,filepath):
-        cipher = self._get_cipher(self.file_key)
-        with open(filepath,"rb") as file:   #normal pickle
-            file_data = pickle.load(file)
-            result = cipher.encrypt(file_data)
-        with open(filepath,"wb") as file:
-            pickle.dump(result)
+    # def encrypt_file(self,filepath):
+    #     cipher = self._get_cipher(self.file_key)
+    #     with open(filepath,"rb") as file:   #normal pickle
+    #         file_data = pickle.load(file)
+    #         result = cipher.encrypt(file_data)
+    #     with open(filepath,"wb") as file:
+    #         pickle.dump(result)
 
-    def decrypt_file(self,filepath):
-        cipher = self._get_cipher(self.file_key)
-        with open(filepath,"rb") as file:
-            file_data = pickle.load(file)
-            result = cipher.decrypt(file_data)
-        with open(filepath,"wb") as file:
-            pickle.dump(result)
+    # def decrypt_file(self,filepath):
+    #     cipher = self._get_cipher(self.file_key)
+    #     with open(filepath,"rb") as file:
+    #         file_data = pickle.load(file)
+    #         result = cipher.decrypt(file_data)
+    #     with open(filepath,"wb") as file:
+    #         pickle.dump(result)
