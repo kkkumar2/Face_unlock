@@ -4,7 +4,7 @@ python-dotenv
 jsons
 cryptography
 pandas
-opencv-python
+# opencv-python
 scikit-learn
 face_recognition
  

@@ -33,7 +33,14 @@ if "database_controller" not in st.session_state:
 app_mode = st.sidebar.selectbox('Choose the App mode',
 ['About App','Face Verification'])
 if app_mode =='About App':
-    pass
+    with open("README.md", "r", encoding="utf-8") as fh:
+        readme = ""
+        unwanted_list = ['<h2>','![GIF]','## Dataset','<a href=','A demo']
+        for line in fh:            
+            if line.startswith(tuple(unwanted_list)): 
+                continue
+            readme = readme + line
+    st.markdown(readme)
 
 elif app_mode == "Face Verification" and st.session_state.score == 0:
     st.title("WEBCAM")
