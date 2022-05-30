@@ -84,15 +84,15 @@ class Encrypt:
     # def encrypt_file(self,filepath):
     #     cipher = self._get_cipher(self.file_key)
     #     with open(filepath,"rb") as file:   #normal pickle
-    #         file_data = pickle.load(file)
+    #         file_data = file.read()
     #         result = cipher.encrypt(file_data)
     #     with open(filepath,"wb") as file:
-    #         pickle.dump(result)
+    #         file.write(result)
 
     # def decrypt_file(self,filepath):
     #     cipher = self._get_cipher(self.file_key)
     #     with open(filepath,"rb") as file:
-    #         file_data = pickle.load(file)
+    #         file_data = file.read()
     #         result = cipher.decrypt(file_data)
     #     with open(filepath,"wb") as file:
-    #         pickle.dump(result)
+    #         file.write(result)

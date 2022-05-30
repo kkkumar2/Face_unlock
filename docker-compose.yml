@@ -10,7 +10,7 @@ services:
       - frontend
                                                 
   streamlit:
-    build: Streamlit/
+    build: STREAMLIT/
     depends_on:
       - web
     ports:
